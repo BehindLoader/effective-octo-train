@@ -10,10 +10,19 @@ class Settings(BaseSettings):
     UVICORN_DEBUG: bool = False
     UVICORN_LOG_LEVEL: str = 'debug'
 
+    DATABASE_URL: str
+
     TELEGRAM_BOT_TOKEN: str
+
+    PUBLICATIONS_LIMIT_PER_DAY: int = 50
+    PERIODIC_TASK_COOLDOWN: int = 60 * 60
 
     LOGGING = {
         'version': 1,
+        'root': {
+            'level': 'WARNING',
+            'handlers': ['console', ],
+        },
         'disable_existing_loggers': False,
         'formatters': {
             'standard': {
@@ -27,7 +36,7 @@ class Settings(BaseSettings):
                 'class': 'logging.StreamHandler',
             },
             'uvicorn.error': {
-                'level': 'DEBUG',
+                'level': 'WARNING',
                 'class': 'logging.handlers.RotatingFileHandler',
                 'filename': 'logs/error.log',
                 'formatter': 'standard',
